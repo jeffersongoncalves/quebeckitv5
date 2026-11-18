@@ -1,17 +1,18 @@
 <div class="filament-hidden">
 
-![FilaKit](https://raw.githubusercontent.com/jeffersongoncalves/filakitv5/main/art/jeffersongoncalves-filakitv5.png)
+![QuebecKit](https://raw.githubusercontent.com/jeffersongoncalves/quebeckitv5/main/art/jeffersongoncalves-quebeckitv5.png)
 
 </div>
 
-# FilaKit Start Kit Filament 5.x and Laravel 13.x
+# QuebecKit Start Kit Filament 5.x and Laravel 13.x
 
 [![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-support-FFDD00?style=flat-square&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/jeffersongoncalves)
 
-## About FilaKit
+## About QuebecKit
 
-FilaKit is a robust starter kit built on Laravel 13.x and Filament 5.x, designed to accelerate the development of modern
-web applications with a ready-to-use multi-panel structure.
+QuebecKit is a robust starter kit built on Laravel 13.x and Filament 5.x, designed to accelerate the development of modern
+web applications with a ready-to-use multi-panel structure and the Quebec Law 25 privacy suite already installed: the tooling for
+Quebec's Law 25, managed from the Admin panel.
 
 ## Features
 
@@ -21,7 +22,8 @@ web applications with a ready-to-use multi-panel structure.
     - Admin Panel (`/admin`) - For system administrators
     - App Panel (`/app`) - For authenticated application users
     - Public Panel (frontend interface) - For visitors
-- **Environment Configuration** - Centralized configuration through the `config/filakit.php` file
+- **Quebec Law 25 privacy suite** - every `laravel-quebec*` package and its `filament-quebec*` plugin (3.x), wired into the Admin panel
+- **Environment Configuration** - Centralized configuration through the `config/quebeckit.php` file
 
 ## System Requirements
 
@@ -33,7 +35,7 @@ web applications with a ready-to-use multi-panel structure.
 
 Clone the repository
 ``` bash
-laravel new my-app --using=jeffersongoncalves/filakitv5 --database=mysql
+laravel new my-app --using=jeffersongoncalves/quebeckitv5 --database=mysql
 ```
 
 ### Using FilaKit CLI
@@ -41,14 +43,14 @@ laravel new my-app --using=jeffersongoncalves/filakitv5 --database=mysql
 Or use [FilaKit CLI](https://github.com/jeffersongoncalves/filakit-cli) for a simplified setup:
 
 ```bash
-filakit new my-app --kit=jeffersongoncalves/filakitv5
+filakit new my-app --kit=jeffersongoncalves/quebeckitv5
 ```
 
 > Install FilaKit CLI: `composer global require jeffersongoncalves/filakit-cli`
 
 ###  Easy Installation
 
-FilaKit can be easily installed using the following command:
+QuebecKit can be easily installed using the following command:
 
 ```bash
 php install.php
@@ -99,7 +101,7 @@ php artisan serve
 
 Clone the repository
 ```bash
-laravel new my-app --using=jeffersongoncalves/filakitv5 --database=mysql
+laravel new my-app --using=jeffersongoncalves/quebeckitv5 --database=mysql
 ```
 
 Move into the project directory
@@ -154,9 +156,35 @@ Install JavaScript dependencies
 pnpm install
 ```
 
+## Quebec Law 25 privacy suite
+
+The kit ships the whole Quebec Law 25 suite for Quebec's Law 25:
+
+| Package | Filament plugin |
+|---|---|
+| [laravel-quebec](https://github.com/jeffersongoncalves/laravel-quebec) | [filament-quebec](https://github.com/jeffersongoncalves/filament-quebec) |
+| [laravel-quebec-consent](https://github.com/jeffersongoncalves/laravel-quebec-consent) | [filament-quebec-consent](https://github.com/jeffersongoncalves/filament-quebec-consent) |
+| [laravel-quebec-requests](https://github.com/jeffersongoncalves/laravel-quebec-requests) | [filament-quebec-requests](https://github.com/jeffersongoncalves/filament-quebec-requests) |
+| [laravel-quebec-retention](https://github.com/jeffersongoncalves/laravel-quebec-retention) | [filament-quebec-retention](https://github.com/jeffersongoncalves/filament-quebec-retention) |
+| [laravel-quebec-audit-log](https://github.com/jeffersongoncalves/laravel-quebec-audit-log) | [filament-quebec-audit-log](https://github.com/jeffersongoncalves/filament-quebec-audit-log) |
+| [laravel-quebec-incidents](https://github.com/jeffersongoncalves/laravel-quebec-incidents) | [filament-quebec-incidents](https://github.com/jeffersongoncalves/filament-quebec-incidents) |
+| [laravel-quebec-governance](https://github.com/jeffersongoncalves/laravel-quebec-governance) | [filament-quebec-governance](https://github.com/jeffersongoncalves/filament-quebec-governance) |
+| [laravel-quebec-vendors](https://github.com/jeffersongoncalves/laravel-quebec-vendors) | [filament-quebec-vendors](https://github.com/jeffersongoncalves/filament-quebec-vendors) |
+| [laravel-quebec-pia](https://github.com/jeffersongoncalves/laravel-quebec-pia) | [filament-quebec-pia](https://github.com/jeffersongoncalves/filament-quebec-pia) |
+| [laravel-quebec-minors](https://github.com/jeffersongoncalves/laravel-quebec-minors) | [filament-quebec-minors](https://github.com/jeffersongoncalves/filament-quebec-minors) |
+
+- `App\Models\User` is the data subject: it implements `HasPersonalData` and declares its `name` and `email` with `#[PersonalData]`.
+  Declare every personal column you add, on this model and on your own models, and list those models in `config/quebec.php`.
+- The migrations are already in `database/migrations`: `php artisan migrate` creates every table of the suite.
+- Every plugin is registered in `app/Providers/Filament/AdminPanelProvider.php`, under the **Quebec Law 25** navigation group.
+- `tests/Feature/QuebecSuiteTest.php` checks the declarations and opens every page of the suite.
+
+Each package's README explains its configuration, events and scheduled commands. The suite gives you tooling: it does not make
+you compliant on its own, you still need legal review.
+
 ## Authentication Structure
 
-FilaKit comes pre-configured with a custom authentication system that supports different types of users:
+QuebecKit comes pre-configured with a custom authentication system that supports different types of users:
 
 - `Admin` - For administrative panel access
 - `User` - For application panel access
@@ -183,16 +211,16 @@ Panels can be customized through their respective providers:
 - `app/Providers/Filament/AppPanelProvider.php`
 - `app/Providers/Filament/PublicPanelProvider.php`
 
-Alternatively, these settings are also consolidated in the `config/filakit.php` file for easier management.
+Alternatively, these settings are also consolidated in the `config/quebeckit.php` file for easier management.
 
 ### Themes and Colors
 
 Each panel can have its own color scheme, which can be easily modified in the corresponding Provider files or in the
-`filakit.php` configuration file.
+`quebeckit.php` configuration file.
 
 ### Configuration File
 
-The `config/filakit.php` file centralizes the configuration of the starter kit, including:
+The `config/quebeckit.php` file centralizes the configuration of the starter kit, including:
 
 - Panel routes
 - Middleware for each panel
@@ -286,7 +314,7 @@ Reference
 
 ## Resources
 
-FilaKit includes support for:
+QuebecKit includes support for:
 
 - User and admin management
 - Multi-guard authentication system

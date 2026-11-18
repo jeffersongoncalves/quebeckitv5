@@ -26,6 +26,16 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use JeffersonGoncalves\Filament\Admin\AdminPlugin;
 use JeffersonGoncalves\Filament\Admin\Pages\Auth\Login;
 use JeffersonGoncalves\Filament\Pwa\FilamentPwaPlugin;
+use JeffersonGoncalves\Filament\Quebec\QuebecPlugin;
+use JeffersonGoncalves\Filament\QuebecAuditLog\QuebecAuditLogPlugin;
+use JeffersonGoncalves\Filament\QuebecConsent\QuebecConsentPlugin;
+use JeffersonGoncalves\Filament\QuebecGovernance\QuebecGovernancePlugin;
+use JeffersonGoncalves\Filament\QuebecIncidents\QuebecIncidentsPlugin;
+use JeffersonGoncalves\Filament\QuebecMinors\QuebecMinorsPlugin;
+use JeffersonGoncalves\Filament\QuebecPia\QuebecPiaPlugin;
+use JeffersonGoncalves\Filament\QuebecRequests\QuebecRequestsPlugin;
+use JeffersonGoncalves\Filament\QuebecRetention\QuebecRetentionPlugin;
+use JeffersonGoncalves\Filament\QuebecVendors\QuebecVendorsPlugin;
 use JeffersonGoncalves\Filament\SecurityHeaders\SecurityHeadersPlugin;
 use JeffersonGoncalves\Filament\User\UserPlugin;
 use JeffersonGoncalves\SecurityHeaders\Middleware\SecurityHeaders;
@@ -45,10 +55,10 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Amber,
             ])
-            ->brandLogo(fn () => Vite::asset(config('filakit.logo')))
+            ->brandLogo(fn () => Vite::asset(config('quebeckit.logo')))
             ->brandLogoHeight(fn () => request()->is('admin/login', 'admin/password-reset/*') ? '121px' : '50px')
             ->viteTheme('resources/css/filament/admin/theme.css')
-            ->defaultThemeMode(config('filakit.theme_mode', ThemeMode::Dark))
+            ->defaultThemeMode(config('quebeckit.theme_mode', ThemeMode::Dark))
             ->discoverClusters(in: app_path('Filament/Admin/Clusters'), for: 'App\\Filament\\Admin\\Clusters')
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\\Filament\\Admin\\Pages')
             ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\\Filament\\Admin\\Resources')
@@ -78,12 +88,33 @@ class AdminPanelProvider extends PanelProvider
             ->navigationGroups([
                 __('User'),
                 __('Management'),
+                __('Quebec Law 25'),
                 __('Settings'),
             ])
             ->plugins([
                 SecurityHeadersPlugin::make()
                     ->navigationGroup(fn (): string => __('Settings')),
                 AdminPlugin::make(),
+                QuebecPlugin::make()
+                    ->navigationGroup('Quebec Law 25'),
+                QuebecConsentPlugin::make()
+                    ->navigationGroup('Quebec Law 25'),
+                QuebecRequestsPlugin::make()
+                    ->navigationGroup('Quebec Law 25'),
+                QuebecRetentionPlugin::make()
+                    ->navigationGroup('Quebec Law 25'),
+                QuebecAuditLogPlugin::make()
+                    ->navigationGroup('Quebec Law 25'),
+                QuebecIncidentsPlugin::make()
+                    ->navigationGroup('Quebec Law 25'),
+                QuebecGovernancePlugin::make()
+                    ->navigationGroup('Quebec Law 25'),
+                QuebecVendorsPlugin::make()
+                    ->navigationGroup('Quebec Law 25'),
+                QuebecPiaPlugin::make()
+                    ->navigationGroup('Quebec Law 25'),
+                QuebecMinorsPlugin::make()
+                    ->navigationGroup('Quebec Law 25'),
                 UserPlugin::make(),
                 FilamentPwaPlugin::make(),
                 FilamentDeveloperLoginsPlugin::make()
